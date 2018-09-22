@@ -2,6 +2,8 @@
 #include <iostream>
 #include <fstream>
 #include <chrono>
+
+//#include <stdio.h>
 using namespace std;
 
 /***********************************************************
@@ -52,6 +54,9 @@ int main(int argc, char *argv[])
 	/* Check against Key by Bisection  */
 	find_index = findBisection(key, A, n);
 
+	//cout<< find_index <<endl;
+
+	
 	//Begin output file : DO NOT CHANGE
 	ofstream outfile(strcat(argv[1], "_out"));
 	outfile << difference_in_seconds_dictionary << endl;
@@ -62,32 +67,60 @@ int main(int argc, char *argv[])
 	outfile << find_index << endl;
 	if (find_index != -1)  outfile << A[find_index] << endl;
 	//End output file
-
+	
+	
+	
+	
+	//system("pause");
 	return 0;
+	
 }
-
-/****************************************
-Provide funtions below
-****************************************/
 
 int findBisection(int key, int *a, int N)
 {
-	for (int i = 0; i < N - 1; i++) {
-		int m = (a[0] + a[N - 1]) / 2;
-		if (key < m	or key > m) {
-			return m;
+	int left = 0;
+	int right = N - 1;
+	int mid;
+
+	while (left <= right) {
+		mid = (left + right) / 2;
+		if (a[mid]>key) {
+			right = mid-1;
 		}
-		else {
-			return i;
+		else if (a[mid] < key) {
+			left = mid + 1;
+		}
+		else if (a[mid] == key) {
+			return mid;
 		}
 	}
-
 	int index = -1;
 	return index;
 }
 
 int findDictionary(int key, int *a, int N)
 {
+	int left = 0;
+	int right = N - 1;
+	double x;
+	int m;
+
+	
+	while (left <= right) {
+		x = double(key - a[left]) / (double(a[right]) - a[left]);
+		m = int(left + x * (right - left));
+		if (a[m] < key) {
+			left = m + 1;
+		}
+		else if (a[m] > key) {
+			right = m - 1;
+		}
+		else if (a[m] == key) {
+			return m;
+		}
+	}
+
 	int index = -1;
+
 	return index;
 }
